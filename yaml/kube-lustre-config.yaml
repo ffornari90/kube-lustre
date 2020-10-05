@@ -1,0 +1,44 @@
+kind: ConfigMap
+metadata:
+  name: kube-lustre-config
+  namespace: lustre
+apiVersion: v1
+data:
+  configuration.json: |
+    {
+      "configuration1": {
+        "lustre": {
+          "install": true,
+          "mgsnode": "k8s-master.novalocal:k8s-worker-1.novalocal",
+          "fsname": "lustre1",
+          "device": "/dev/drbd0",
+          "debug": false,
+          "force_create": false,
+          "mountpoint": "/stor/lustre1"
+        },
+        "drbd": {
+          "install": true,
+          "device": "/dev/drbd0",
+          "port": "7788",
+          "debug": false,
+          "force_create": false,
+          "disks": ["/dev/vdb", "/dev/vdb"]
+        }
+      }
+    }
+  daemons.json: |
+    {
+      "configuration1": {
+         "mdt0-mgs": ["k8s-master.novalocal", "k8s-worker-1.novalocal"],
+         "ost0": ["k8s-worker-2.novalocal", "k8s-worker-3.novalocal"]
+      }
+    }
+  clients.json: |
+    {
+      "configuration1": [
+         "k8s-master.novalocal",
+         "k8s-worker-1.novalocal",
+         "k8s-worker-2.novalocal",
+         "k8s-worker-3.novalocal"
+      ]
+    }
