@@ -26,8 +26,8 @@ What each image does?
 ## Requirements
 
 * **Kubernetes:** >=1.9.1 version
-* **Servers:** Centos 7 with latest updates and kernel-headers
-* **Clients:** Centos 7 with latest updates and kernel-headers (or installed `lustre` kernel-module)
+* **Servers:** Centos 7 with latest updates
+* **Clients:** Centos 7 with latest updates (or installed `lustre` kernel-module)
 * **Selinux**: disabled
 * **Hostnames**: Each node should reach each other by single hostname
 * **Fixed IPs**: Each node should have unchangeable IP-address
