@@ -6,11 +6,7 @@ set -e
 [ -z "$KERNEL_VERSION" ] && KERNEL_VERSION="$(uname -r)"
 
 install_lustre_repo() {
-    if [ -z "$1" ]; then
-        RELEASE="latest-release"
-    else
-        RELEASE="lustre-$1"
-    fi
+    RELEASE="lustre-2.10.8"
 
     cat > "$CHROOT/etc/yum.repos.d/lustre.repo" <<EOF
 [lustre-server]
@@ -27,7 +23,7 @@ gpgcheck=0
 
 [e2fsprogs-wc]
 name=e2fsprogs-wc
-baseurl=https://downloads.whamcloud.com/public/e2fsprogs/latest/el7
+baseurl=https://downloads.whamcloud.com/public/e2fsprogs/1.44.5.wc1/el7
 # exclude=*debuginfo*
 gpgcheck=0
 EOF

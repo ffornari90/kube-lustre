@@ -24,7 +24,7 @@ spec:
         effect: NoSchedule
       initContainers:
       - name: lustre-install
-        image: ffornari/kube-lustre:lustre-install
+        image: ffornari/kube-lustre:lustre-2.10.8-install
         env:
         - name: CHROOT
           value: "/host-root"
