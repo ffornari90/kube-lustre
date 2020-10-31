@@ -5,8 +5,8 @@ set -e
 
 # default parameters
 [ -z "$KERNEL_VERSION" ] && KERNEL_VERSION="$(uname -r)"
-VERSION="8.4.10-1"
-UTILS_VERSION="9.1.0-1"
+VERSION="8.4.11-1"
+UTILS_VERSION="9.12.2-1"
 
 
 install_drbd_dkms() {
@@ -50,7 +50,7 @@ EOF
 }
 
 install_drbd_utils() {
-    $YUM -y install "https://mirror.imt-systems.com/elrepo/archive/elrepo/el7/x86_64/RPMS/drbd84-utils-$UTILS_VERSION.el7.elrepo.x86_64.rpm"
+    $YUM -y install "http://elrepo.org/linux/elrepo/el7/x86_64/RPMS/drbd84-utils-$UTILS_VERSION.el7.elrepo.x86_64.rpm"
 }
 
 # if chroot is set, use yum and rpm from chroot
