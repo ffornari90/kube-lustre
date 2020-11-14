@@ -49,11 +49,23 @@ spec:
           value: "${LUSTRE_MGSNODE}"
         - name: MOUNTPOINT
           value: "${LUSTRE_MOUNTPOINT}"
-        #volumeMounts:
-        #- name: host-root
-        #  mountPath: /host-root
+        volumeMounts:
+          - name: systemctlcmd
+            mountPath: /usr/bin/systemctl
+          - name: devdir
+            mountPath: /dev
+          #- name: host-root
+          #  mountPath: /host-root
       terminationGracePeriodSeconds: 60
-      #volumes:
-      #- name: host-root
-      #  hostPath:
-      #    path: /
+      volumes:
+        - name: systemctlcmd
+          hostPath:
+            path: /root/docker-systemctl-replacement/files/docker/systemctl.py
+            type: File
+        - name: devdir
+          hostPath:
+            path: /dev
+            type: Directory
+        #- name: host-root
+        #  hostPath:
+        #    path: /
