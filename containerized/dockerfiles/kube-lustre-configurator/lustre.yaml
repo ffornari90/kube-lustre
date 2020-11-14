@@ -30,7 +30,7 @@ spec:
         effect: NoSchedule
       initContainers:
       - name: lustre-install
-        image: ffornari/kube-lustre:lustre-2.10.8-install
+        image: ffornari/kube-lustre:lustre-2.10.8-install-containerized
         env:
         #- name: CHROOT
         #  value: "/host-root"
@@ -41,7 +41,7 @@ spec:
         #  mountPath: "/host-root"
       containers:
       - name: ${APP_NAME}
-        image: ffornari/kube-lustre:lustre
+        image: ffornari/kube-lustre:lustre-containerized
         securityContext:
           privileged: true
         env:

@@ -5,6 +5,6 @@
 #    -e MOUNTPOINT=/stor/lustre1 \
 #    kvaps/lustre
 
-FROM alpine
+FROM centos:7
 ADD lustre-client-wrapper.sh /
 CMD ["/lustre-client-wrapper.sh"]

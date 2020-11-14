@@ -9,18 +9,18 @@ data:
       "configuration1": {
         "lustre": {
           "install": true,
-          "mgsnode": "k8s-master.novalocal:k8s-worker-1.novalocal",
-          "fsname": "lustre1",
+          "mgsnode": "k8s-lustre-1.novalocal:k8s-lustre-2.novalocal",
+          "fsname": "lustrefs",
           "device": "/dev/drbd0",
-          "debug": false,
+          "debug": true,
           "force_create": false,
-          "mountpoint": "/stor/lustre1"
+          "mountpoint": "/stor/lustrefs"
         },
         "drbd": {
           "install": true,
           "device": "/dev/drbd0",
           "port": "7788",
-          "debug": false,
+          "debug": true,
           "force_create": false,
           "disks": ["/dev/vdb", "/dev/vdb"]
         }
@@ -29,16 +29,16 @@ data:
   daemons.json: |
     {
       "configuration1": {
-         "mdt0-mgs": ["k8s-master.novalocal", "k8s-worker-1.novalocal"],
-         "ost0": ["k8s-worker-2.novalocal", "k8s-worker-3.novalocal"]
+         "mdt0-mgs": ["k8s-lustre-1.novalocal", "k8s-lustre-2.novalocal"],
+         "ost0": ["k8s-lustre-3.novalocal", "k8s-lustre-4.novalocal"]
       }
     }
   clients.json: |
     {
       "configuration1": [
-         "k8s-master.novalocal",
-         "k8s-worker-1.novalocal",
-         "k8s-worker-2.novalocal",
-         "k8s-worker-3.novalocal"
+         "k8s-lustre-1.novalocal",
+         "k8s-lustre-2.novalocal",
+         "k8s-lustre-3.novalocal",
+         "k8s-lustre-4.novalocal"
       ]
     }

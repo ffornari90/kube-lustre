@@ -17,7 +17,7 @@ spec:
         - name: CONFIGURE_CLIENTS
           value: "1"
         - name: DEBUG
-          value: "0"
+          value: "1"
         volumeMounts:
         - name: config
           mountPath: /etc/kube-lustre

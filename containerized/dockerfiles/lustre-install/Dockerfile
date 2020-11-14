@@ -1,5 +1,5 @@
 # docker run -e CHROOT=/host-root -v /:/host-root kvaps/lustre-install
 
-FROM alpine
+FROM centos:7
 ADD install-lustre.sh /
 CMD ["/install-lustre.sh"]

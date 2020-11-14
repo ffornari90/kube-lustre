@@ -12,6 +12,6 @@
 #    -e NODE2_PORT=7788 \
 #    kvaps/drbd
 
-FROM alpine
+FROM centos:7
 ADD drbd-wrapper.sh template.res /
 CMD ["/drbd-wrapper.sh"]
