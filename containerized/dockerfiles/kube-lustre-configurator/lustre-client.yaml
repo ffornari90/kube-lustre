@@ -22,14 +22,14 @@ spec:
       - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
-      initContainers:
-      - name: lustre-install
-        image: ffornari/kube-lustre:lustre-2.10.8-install-containerized
-        env:
+      #initContainers:
+      #- name: lustre-install
+        #image: ffornari/kube-lustre:lustre-2.10.8-install-containerized
+        #env:
         #- name: CHROOT
         #  value: "/host-root"
-        - name: DEBUG
-          value: "${LUSTRE_DEBUG:-0}"
+        #- name: DEBUG
+        #  value: "${LUSTRE_DEBUG:-0}"
         #volumeMounts:
         #- name: host-root
         #  mountPath: "/host-root"
