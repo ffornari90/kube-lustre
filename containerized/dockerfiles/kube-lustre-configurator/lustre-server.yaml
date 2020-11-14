@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: ${APP_NAME}
+  name: ${APP_NAME}-drbd
   labels:
-      app: ${APP_NAME}
+      app: ${APP_NAME}-drbd
       ${NODE_LABEL}: ""
-      ${LUSTRE_FSNAME}/server: "lustre"
+      ${LUSTRE_FSNAME}/server: "drbd"
 spec:
   selector:
     matchLabels:
-      name: ${APP_NAME}
-  serviceName: ${APP_NAME}
+      name: ${APP_NAME}-drbd
   template:
     metadata:
       labels:
-        name: ${APP_NAME}
+        name: ${APP_NAME}-drbd
         ${NODE_LABEL}: ""
-        ${LUSTRE_FSNAME}/server: "lustre"
+        ${LUSTRE_FSNAME}/server: "drbd"
     spec:
       hostNetwork: true
       nodeSelector:
