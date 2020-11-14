@@ -173,24 +173,24 @@ for CONFIGURATION in $CONFIGURATIONS; do
             kubectl label node --overwrite "$NODE2_NAME" "$LUSTRE_FSNAME/server="
         fi
 
-        # apply drbd resources
+        # apply server resources
         if [ "$DRBD" == "true" ]; then
             [ "$DRBD_SYNCER_RATE" == "null" ] && DRBD_SYNCER_RATE="5M"
             [ "$DRBD_PROTOCOL" == "null" ] && DRBD_PROTOCOL="C"
 
-            if [ "$DRBD_INSTALL" == "true" ]; then
-                eval "echo \"$(cat drbd.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
+            if [ "$DRBD_INSTALL" == "true" ] && [ "$LUSTRE_INSTALL" == "true" ]; then
+                eval "echo \"$(cat lustre-server.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
             else
-                eval "echo \"$(cat drbd.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
+                eval "echo \"$(cat lustre-server.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
             fi
         fi
 
         # apply lustre resources
-        if [ "$LUSTRE_INSTALL" == "true" ]; then
-            eval "echo \"$(cat lustre.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
-        elif [ "$LUSTRE_INSTALL" == "false" ]; then
-            eval "echo \"$(cat lustre.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
-        fi
+        #if [ "$LUSTRE_INSTALL" == "true" ]; then
+        #    eval "echo \"$(cat lustre.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
+        #elif [ "$LUSTRE_INSTALL" == "false" ]; then
+        #    eval "echo \"$(cat lustre.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
+        #fi
 
     done
 

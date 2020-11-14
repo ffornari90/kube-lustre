@@ -16,6 +16,9 @@ docker push ffornari/kube-lustre:lustre-client-containerized
 cd ${TOPDIR}/dockerfiles/lustre-install
 docker build --tag ffornari/kube-lustre:lustre-2.10.8-install-containerized .
 docker push ffornari/kube-lustre:lustre-2.10.8-install-containerized
+cd ${TOPDIR}/dockerfiles/lustre-server
+docker build --tag ffornari/kube-lustre:lustre-server-containerized .
+docker push ffornari/kube-lustre:lustre-server-containerized
 cd ${TOPDIR}/dockerfiles/kube-lustre-configurator
 docker build --tag ffornari/kube-lustre:kube-lustre-configurator-containerized .
 docker push ffornari/kube-lustre:kube-lustre-configurator-containerized
