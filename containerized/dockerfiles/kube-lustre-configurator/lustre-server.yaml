@@ -1,5 +1,6 @@
+
 apiVersion: apps/v1
-kind: StatefulSet
+kind: DaemonSet
 metadata:
   name: ${APP_NAME}
   labels:
@@ -11,9 +12,6 @@ spec:
     matchLabels:
       name: ${APP_NAME}
   serviceName: ${APP_NAME}
-  replicas: 1
-  updateStrategy:
-    type: OnDelete
   template:
     metadata:
       labels:
