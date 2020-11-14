@@ -93,11 +93,17 @@ spec:
           value: "${DRBD_PORT}"
         - name: FORCE_CREATE
           value: "${DRBD_FORCE_CREATE:-0}"
-        #volumeMounts:
+        volumeMounts:
+          - name: systemctlcmd
+            mountPath: /usr/bin/systemctl
         #- name: host-root
         #  mountPath: /host-root
       terminationGracePeriodSeconds: 60
-      #volumes:
+      volumes:
+        - name: systemctlcmd
+          hostPath:
+            path: /root/docker-systemctl-replacement/files/docker/systemctl.py
+            type: File
       #- name: host-root
       #  hostPath:
       #    path: /
