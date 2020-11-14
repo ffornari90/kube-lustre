@@ -96,6 +96,8 @@ spec:
         volumeMounts:
           - name: systemctlcmd
             mountPath: /usr/bin/systemctl
+          - name: devdir
+            mountPath: /dev
         #- name: host-root
         #  mountPath: /host-root
       terminationGracePeriodSeconds: 60
@@ -104,6 +106,10 @@ spec:
           hostPath:
             path: /root/docker-systemctl-replacement/files/docker/systemctl.py
             type: File
+        - name: devdir
+          hostPath:
+            path: /dev
+            type: Directory
       #- name: host-root
       #  hostPath:
       #    path: /
