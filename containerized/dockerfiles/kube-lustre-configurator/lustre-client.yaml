@@ -54,6 +54,8 @@ spec:
             mountPath: /usr/bin/systemctl
           - name: devdir
             mountPath: /dev
+          - name: lustredir
+            mountPath: /stor/lustrefs
           #- name: host-root
           #  mountPath: /host-root
       terminationGracePeriodSeconds: 60
@@ -65,6 +67,10 @@ spec:
         - name: devdir
           hostPath:
             path: /dev
+            type: Directory
+        - name: lustredir
+          hostPath:
+            path: /stor/lustrefs
             type: Directory
         #- name: host-root
         #  hostPath:
