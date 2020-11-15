@@ -11,4 +11,4 @@ RUN yum install -y dkms http://os-server.cr.cnaf.infn.it/distro/snapshots/201908
 RUN curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
  && chmod +x /usr/local/bin/kubectl
 RUN /install-drbd.sh && /install-lustre.sh 
-CMD /drbd-wrapper.sh && /lustre-wrapper.sh
+CMD source /drbd-wrapper.sh && source /lustre-wrapper.sh
