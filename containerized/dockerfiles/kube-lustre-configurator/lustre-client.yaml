@@ -50,8 +50,6 @@ spec:
         - name: MOUNTPOINT
           value: "${LUSTRE_MOUNTPOINT}"
         volumeMounts:
-          - name: systemctlcmd
-            mountPath: /usr/bin/systemctl
           - name: devdir
             mountPath: /dev
           - name: lustredir
@@ -60,10 +58,6 @@ spec:
           #  mountPath: /host-root
       terminationGracePeriodSeconds: 60
       volumes:
-        - name: systemctlcmd
-          hostPath:
-            path: /root/docker-systemctl-replacement/files/docker/systemctl.py
-            type: File
         - name: devdir
           hostPath:
             path: /dev
