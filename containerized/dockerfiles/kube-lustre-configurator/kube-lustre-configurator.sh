@@ -185,13 +185,6 @@ for CONFIGURATION in $CONFIGURATIONS; do
             fi
         fi
 
-        # apply lustre resources
-        #if [ "$LUSTRE_INSTALL" == "true" ]; then
-        #    eval "echo \"$(cat lustre.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
-        #elif [ "$LUSTRE_INSTALL" == "false" ]; then
-        #    eval "echo \"$(cat lustre.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
-        #fi
-
     done
 
     if [ "$CONFIGURE_CLIENTS" == "1" ]; then

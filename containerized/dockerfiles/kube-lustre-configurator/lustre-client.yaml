@@ -22,17 +22,6 @@ spec:
       - key: node-role.kubernetes.io/master
         operator: Exists
         effect: NoSchedule
-      #initContainers:
-      #- name: lustre-install
-        #image: ffornari/kube-lustre:lustre-2.10.8-install-containerized
-        #env:
-        #- name: CHROOT
-        #  value: "/host-root"
-        #- name: DEBUG
-        #  value: "${LUSTRE_DEBUG:-0}"
-        #volumeMounts:
-        #- name: host-root
-        #  mountPath: "/host-root"
       containers:
       - name: ${LUSTRE_FSNAME}-client
         image: ffornari/kube-lustre:lustre-client-containerized
@@ -41,8 +30,6 @@ spec:
         env:
         - name: DEBUG
           value: "${LUSTRE_DEBUG:-0}"
-        #- name: CHROOT
-        #  value: "/host-root"
         - name: FSNAME
           value: "${LUSTRE_FSNAME}"
         - name: MGSNODE
@@ -53,9 +40,7 @@ spec:
           - name: devdir
             mountPath: /dev
           - name: lustredir
-            mountPath: /stor/lustrefs
-          #- name: host-root
-          #  mountPath: /host-root
+            mountPath: "${LUSTRE_MOUNTPOINT}"
       terminationGracePeriodSeconds: 60
       volumes:
         - name: devdir
@@ -64,8 +49,5 @@ spec:
             type: Directory
         - name: lustredir
           hostPath:
-            path: /stor/lustrefs
+            path: "${LUSTRE_MOUNTPOINT}"
             type: Directory
-        #- name: host-root
-        #  hostPath:
-        #    path: /

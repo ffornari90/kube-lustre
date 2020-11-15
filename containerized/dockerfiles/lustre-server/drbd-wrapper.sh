@@ -82,5 +82,4 @@ then
     $DRBDADM secondary "$RESOURCE_NAME"
 fi
 
-# Sleep calm
-#tail -f /dev/null & wait $!
+$DRBDADM -- --overwrite-data-of-peer primary "$RESOURCE_NAME"
