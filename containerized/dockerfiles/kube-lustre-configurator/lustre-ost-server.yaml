@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ${APP_NAME}-drbd
+  labels:
+      app: ${APP_NAME}-drbd
+      ${NODE_LABEL}: ""
+      ${LUSTRE_FSNAME}/server: "drbd"
+spec:
+  selector:
+    matchLabels:
+      name: ${APP_NAME}-drbd
+  template:
+    metadata:
+      labels:
+        name: ${APP_NAME}-drbd
+        ${NODE_LABEL}: ""
+        ${LUSTRE_FSNAME}/server: "drbd"
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        ${NODE_LABEL}: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: ${APP_NAME}
+        image: ffornari/kube-lustre:lustre-ost-server-containerized
+        securityContext:
+          privileged: true
+        env:
+        - name: KUBE_NOTIFY
+          value: "1"
+        - name: DEBUG
+          value: "${LUSTRE_DEBUG:-0}"
+        - name: HA_BACKEND
+          value: "${LUSTRE_HA_BACKEND}"
+        - name: RESOURCE_NAME
+          value: "${APP_NAME}"
+        - name: DEVICE
+          value: "${LUSTRE_DEVICE}"
+        - name: MOUNT_DIR
+          value: "${LUSTRE_MOUNTPOINT}"
+        - name: FSNAME
+          value: "${LUSTRE_FSNAME}"
+        - name: INDEX
+          value: "${LUSTRE_INDEX}"
+        - name: TYPE
+          value: "${LUSTRE_TYPE}"
+        - name: MGSNODE
+          value: "${LUSTRE_MGSNODE}"
+        - name: SERVICENODE
+          value: "${LUSTRE_SERVICENODE}"
+        - name: FORCE_CREATE
+          value: "${LUSTRE_FORCE_CREATE:-0}"
+        - name: PROTOCOL
+          value: "${DRBD_PROTOCOL}"
+        - name: SYNCER_RATE
+          value: "${DRBD_SYNCER_RATE}"
+        - name: DEBUG
+          value: "${DRBD_DEBUG:-0}"
+        - name: NODE1_NAME
+          value: "${NODE1_NAME}"
+        - name: NODE1_IP
+          value: "${NODE1_IP}"
+        - name: NODE1_DISK
+          value: "${DRBD_NODE1_DISK}"
+        - name: NODE1_PORT
+          value: "${DRBD_PORT}"
+        - name: NODE2_NAME
+          value: "${NODE2_NAME}"
+        - name: NODE2_IP
+          value: "${NODE2_IP}"
+        - name: NODE2_DISK
+          value: "${DRBD_NODE2_DISK}"
+        - name: NODE2_PORT
+          value: "${DRBD_PORT}"
+        - name: FORCE_CREATE
+          value: "${DRBD_FORCE_CREATE:-0}"
+        volumeMounts:
+          - name: devdir
+            mountPath: /dev
+          - name: lustredir
+            mountPath: "${LUSTRE_MOUNTPOINT}"
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: devdir
+          hostPath:
+            path: /dev
+            type: Directory
+        - name: lustredir
+          hostPath:
+            path: "${LUSTRE_MOUNTPOINT}"
+            type: Directory

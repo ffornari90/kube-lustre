@@ -26,7 +26,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: ${APP_NAME}
-        image: ffornari/kube-lustre:lustre-server-containerized
+        image: ffornari/kube-lustre:lustre-mdt-mgs-server-containerized
         securityContext:
           privileged: true
         env:
