@@ -1,5 +1,4 @@
 FROM centos:7
-ADD systemctl /usr/bin/
 ADD install-lustre.sh /
 ADD lustre-client-wrapper.sh /
 RUN yum install -y perl epel-release
