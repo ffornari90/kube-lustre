@@ -179,9 +179,9 @@ for CONFIGURATION in $CONFIGURATIONS; do
             [ "$DRBD_PROTOCOL" == "null" ] && DRBD_PROTOCOL="C"
 
             if [ "$DRBD_INSTALL" == "true" ] && [ "$LUSTRE_INSTALL" == "true" ]; then
-                eval "echo \"$(cat lustre-${LUSTRE_TYPE}-server.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
+                eval "echo \"$(cat lustre-server.yaml | sed 's/"/\\"/g' )\"" | kubectl apply -f -
             else
-                eval "echo \"$(cat lustre-${LUSTRE_TYPE}-server.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
+                eval "echo \"$(cat lustre-server.yaml | sed 's/"/\\"/g' )\"" | sed '/^ *initContainers: *$/,/^ *containers: *$/{/^ *containers: *$/!d}' | kubectl apply -f -
             fi
         fi
 

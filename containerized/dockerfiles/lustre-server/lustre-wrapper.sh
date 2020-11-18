@@ -88,12 +88,14 @@ if [ ! -z "$CHROOT" ]; then
     WIPEFS="chroot $CHROOT wipefs"
     MODPROBE="chroot $CHROOT modprobe"
     ZPOOL="chroot $CHROOT zpool"
+    SYSTEMCTL="chroot $CHROOT systemctl"
     MKFS_LUSTRE="chroot $CHROOT mkfs.lustre"
 else
     DRBDADM="drbdadm"
     WIPEFS="wipefs"
     MODPROBE="modprobe"
     ZPOOL="zpool"
+    SYSTEMCTL="systemctl"
     MKFS_LUSTRE="mkfs.lustre"
 fi
 
@@ -105,6 +107,12 @@ $MODPROBE lustre
 if [ "$HA_BACKEND" == "drbd" ]; then
     $DRBDADM status "$RESOURCE_NAME" 1>/dev/null
 fi
+
+# Create mount target
+mkdir -p "$CHROOT/run/systemd/system"
+MOUNT_TARGET="$MOUNT_DIR"
+SYSTEMD_UNIT="$(echo $MOUNT_TARGET | sed -e 's/-/\\x2d/g' -e 's/\//-/g' -e 's/^-//').target"
+SYSTEMD_UNIT_FILE="$CHROOT/run/systemd/system/$SYSTEMD_UNIT"
 
 cleanup() {
     [ "$?" != "0" ] && KUBE_NOTIFY=0
@@ -118,7 +126,11 @@ cleanup() {
     kill -SIGINT $ZPOOL_PID 2>/dev/null && wait $ZPOOL_PID
 
     # umount lustre target if mounted
-    umount -v "$MOUNT_DIR"
+    if $SYSTEMCTL is-active "$SYSTEMD_UNIT"; then
+        $SYSTEMCTL stop "$SYSTEMD_UNIT"
+    fi
+
+    rm -f "$SYSTEMD_UNIT_FILE"
 
     # export zpool if imported
     if $ZPOOL list "$POOL" &>/dev/null; then
@@ -156,5 +168,26 @@ else
     fi
 fi
 
+# Write unit
+cat > "$SYSTEMD_UNIT_FILE" <<EOT
+[Mount]
+What=$POOL/$NAME
+Where=$MOUNT_TARGET
+Type=lustre
+EOT
+
 # Start daemon
-/usr/sbin/init
+$SYSTEMCTL daemon-reload
+if ! $SYSTEMCTL start "$SYSTEMD_UNIT"; then
+    # print error
+    $SYSTEMCTL status "$SYSTEMD_UNIT" | grep 'mount\[' | sed 's/^.*\]: //g' >&2
+    exit 1
+fi &
+
+MOUNT_PID=$!
+wait $MOUNT_PID
+
+# Sleep calm
+tail -f /dev/null &
+TAILF_PID=$!
+wait $TAILF_PID
