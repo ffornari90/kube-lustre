@@ -29,7 +29,7 @@ $MODPROBE lustre
 # Create mount target
 mkdir -p "$CHROOT/run/systemd/system"
 MOUNT_TARGET="$MOUNTPOINT"
-SYSTEMD_UNIT="$(echo $MOUNT_TARGET | sed -e 's/-/\\x2d/g' -e 's/\//-/g' -e 's/^-//').target"
+SYSTEMD_UNIT="$(echo $MOUNT_TARGET | sed -e 's/-/\\x2d/g' -e 's/\//-/g' -e 's/^-//').mount"
 SYSTEMD_UNIT_FILE="$CHROOT/run/systemd/system/$SYSTEMD_UNIT"
 
 cleanup() {
