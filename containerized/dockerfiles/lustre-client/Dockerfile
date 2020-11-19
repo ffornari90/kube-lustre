@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos/systemd
 ADD install-lustre.sh /
 ADD lustre-client-wrapper.sh /
 ADD init.sh /

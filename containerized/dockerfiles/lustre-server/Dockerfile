@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos/systemd
 ADD install-drbd.sh add-RHEL74-compat-hack.patch /
 ADD install-lustre.sh /
 ADD drbd-wrapper.sh template.res /

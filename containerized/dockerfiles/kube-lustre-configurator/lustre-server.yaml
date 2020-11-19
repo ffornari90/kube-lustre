@@ -40,8 +40,6 @@ spec:
           value: "${APP_NAME}"
         - name: DEVICE
           value: "${LUSTRE_DEVICE}"
-        - name: MOUNT_DIR
-          value: "${LUSTRE_MOUNTPOINT}"
         - name: FSNAME
           value: "${LUSTRE_FSNAME}"
         - name: INDEX
@@ -52,6 +50,8 @@ spec:
           value: "${LUSTRE_MGSNODE}"
         - name: SERVICENODE
           value: "${LUSTRE_SERVICENODE}"
+        - name: MOUNT_DIR
+          value: "${LUSTRE_MOUNTPOINT}"
         - name: FORCE_CREATE
           value: "${LUSTRE_FORCE_CREATE:-0}"
         - name: PROTOCOL
@@ -81,15 +81,15 @@ spec:
         volumeMounts:
           - name: devdir
             mountPath: /dev
-          - name: lustredir
-            mountPath: "${LUSTRE_MOUNTPOINT}"
+          - name: cgroupdir
+            mountPath: /sys/fs/cgroup
       terminationGracePeriodSeconds: 60
       volumes:
         - name: devdir
           hostPath:
             path: /dev
             type: Directory
-        - name: lustredir
+        - name: cgroupdir
           hostPath:
-            path: "${LUSTRE_MOUNTPOINT}"
+            path: /sys/fs/cgroup
             type: Directory
