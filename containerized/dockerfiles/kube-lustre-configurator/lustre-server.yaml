@@ -81,8 +81,8 @@ spec:
         volumeMounts:
           - name: devdir
             mountPath: /dev
-          - name: hostsfile
-            mountPath: /etc/hosts
+          - name: kubedir
+            mountPath: /root/.kube
           - name: cgroupdir
             mountPath: /sys/fs/cgroup
         ports:
@@ -93,10 +93,10 @@ spec:
           hostPath:
             path: /dev
             type: Directory
-        - name: hostsfile
+        - name: kubedir
           hostPath:
-            path: /root/hosts
-            type: File
+            path: /home/centos/.kube
+            type: Directory
         - name: cgroupdir
           hostPath:
             path: /sys/fs/cgroup
