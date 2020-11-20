@@ -17,7 +17,7 @@ spec:
         ${NODE_LABEL}: ""
         ${LUSTRE_FSNAME}/server: "drbd"
     spec:
-      hostNetwork: true
+      hostNetwork: false
       nodeSelector:
         ${NODE_LABEL}: ""
       tolerations:
@@ -81,14 +81,22 @@ spec:
         volumeMounts:
           - name: devdir
             mountPath: /dev
+          - name: hostsfile
+            mountPath: /etc/hosts
           - name: cgroupdir
             mountPath: /sys/fs/cgroup
+        ports:
+        - containerPort: ${DRBD_PORT}
       terminationGracePeriodSeconds: 60
       volumes:
         - name: devdir
           hostPath:
             path: /dev
             type: Directory
+        - name: hostsfile
+          hostPath:
+            path: /root/hosts
+            type: File
         - name: cgroupdir
           hostPath:
             path: /sys/fs/cgroup
