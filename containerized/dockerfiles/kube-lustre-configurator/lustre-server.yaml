@@ -95,7 +95,7 @@ spec:
             type: Directory
         - name: kubedir
           hostPath:
-            path: /home/centos/.kube
+            path: /root/.kube
             type: Directory
         - name: cgroupdir
           hostPath:
