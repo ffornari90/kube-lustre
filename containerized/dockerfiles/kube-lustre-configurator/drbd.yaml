@@ -30,6 +30,10 @@ spec:
         securityContext:
           privileged: true
         env:
+        - name: RESOURCE_NAME
+          value: "${APP_NAME}"
+        - name: DEVICE
+          value: "${DRBD_DEVICE}"
         - name: PROTOCOL
           value: "${DRBD_PROTOCOL}"
         - name: SYNCER_RATE
