@@ -38,8 +38,6 @@ spec:
           value: "1"
         - name: DEBUG
           value: "${LUSTRE_DEBUG:-0}"
-        - name: CHROOT
-          value: "/host-root"
         - name: HA_BACKEND
           value: "${LUSTRE_HA_BACKEND}"
         - name: RESOURCE_NAME
@@ -67,7 +65,7 @@ spec:
             mountPath: /root/.kube
       terminationGracePeriodSeconds: 60
       volumes:
-	- name: devdir
+        - name: devdir
           hostPath:
             path: /dev
             type: Directory
