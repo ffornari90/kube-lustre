@@ -100,12 +100,42 @@ else
 fi
 
 # Check for module
-$MODPROBE zfs
-$MODPROBE lustre
+$MODPROBE -v ksocklnd
+$MODPROBE -v lnet
+lnetctl lnet configure
+lnetctl net add --net tcp --if eth0
+lnetctl net show
+$MODPROBE -v osd_zfs
+
+if [ "$TYPE" == "ost" ]; then
+    $MODPROBE -v ofd
+    $MODPROBE -v mgc
+    $MODPROBE -v ost
+fi
+
+if [ "$TYPE" == "mdt-mgs" ]; then
+    $MODPROBE -v mgs
+    $MODPROBE -v mdt
+fi
+
+if [ "$TYPE" == "mdt" ]; then
+    $MODPROBE -v mdt
+fi
+
+if [ "$TYPE" == "mgs" ]; then
+    $MODPROBE -v mgs
+fi
+
+$MODPROBE -v lod
+$MODPROBE -v mdd
+$MODPROBE -v osp
+$MODPROBE -v zfs
+$MODPROBE -v lustre
 
 # Check for drbd resource
 if [ "$HA_BACKEND" == "drbd" ]; then
     $DRBDADM status "$RESOURCE_NAME" 1>/dev/null
+    $DRBDADM -- --overwrite-data-of-peer primary "$RESOURCE_NAME"
 fi
 
 # Create mount target

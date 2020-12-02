@@ -1,23 +1,27 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: StatefulSet
 metadata:
-  name: ${APP_NAME}-drbd
+  name: ${APP_NAME}
   labels:
-      app: ${APP_NAME}-drbd
+      app: ${APP_NAME}
       ${NODE_LABEL}: ""
-      ${LUSTRE_FSNAME}/server: "drbd"
+      ${LUSTRE_FSNAME}/server: "lustre"
 spec:
   selector:
     matchLabels:
-      name: ${APP_NAME}-drbd
+      name: ${APP_NAME}
+  serviceName: ${APP_NAME}
+  replicas: 1
+  updateStrategy:
+    type: OnDelete
   template:
     metadata:
       labels:
-        name: ${APP_NAME}-drbd
+        name: ${APP_NAME}
         ${NODE_LABEL}: ""
-        ${LUSTRE_FSNAME}/server: "drbd"
+        ${LUSTRE_FSNAME}/server: "lustre"
     spec:
-      hostNetwork: false
+      hostNetwork: true
       nodeSelector:
         ${NODE_LABEL}: ""
       tolerations:
@@ -34,6 +38,8 @@ spec:
           value: "1"
         - name: DEBUG
           value: "${LUSTRE_DEBUG:-0}"
+        - name: CHROOT
+          value: "/host-root"
         - name: HA_BACKEND
           value: "${LUSTRE_HA_BACKEND}"
         - name: RESOURCE_NAME
@@ -54,50 +60,18 @@ spec:
           value: "${LUSTRE_MOUNTPOINT}"
         - name: FORCE_CREATE
           value: "${LUSTRE_FORCE_CREATE:-0}"
-        - name: PROTOCOL
-          value: "${DRBD_PROTOCOL}"
-        - name: SYNCER_RATE
-          value: "${DRBD_SYNCER_RATE}"
-        - name: DEBUG
-          value: "${DRBD_DEBUG:-0}"
-        - name: NODE1_NAME
-          value: "${NODE1_NAME}"
-        - name: NODE1_IP
-          value: "${NODE1_IP}"
-        - name: NODE1_DISK
-          value: "${DRBD_NODE1_DISK}"
-        - name: NODE1_PORT
-          value: "${DRBD_PORT}"
-        - name: NODE2_NAME
-          value: "${NODE2_NAME}"
-        - name: NODE2_IP
-          value: "${NODE2_IP}"
-        - name: NODE2_DISK
-          value: "${DRBD_NODE2_DISK}"
-        - name: NODE2_PORT
-          value: "${DRBD_PORT}"
-        - name: FORCE_CREATE
-          value: "${DRBD_FORCE_CREATE:-0}"
         volumeMounts:
           - name: devdir
             mountPath: /dev
           - name: kubedir
             mountPath: /root/.kube
-          - name: cgroupdir
-            mountPath: /sys/fs/cgroup
-        ports:
-        - containerPort: ${DRBD_PORT}
       terminationGracePeriodSeconds: 60
       volumes:
-        - name: devdir
+	- name: devdir
           hostPath:
             path: /dev
             type: Directory
         - name: kubedir
           hostPath:
             path: /root/.kube
-            type: Directory
-        - name: cgroupdir
-          hostPath:
-            path: /sys/fs/cgroup
             type: Directory

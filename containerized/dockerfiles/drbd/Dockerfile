@@ -1,7 +1,6 @@
 FROM centos/systemd
 ADD install-drbd.sh add-RHEL74-compat-hack.patch /
-ADD install-lustre.sh /
-ADD lustre-wrapper.sh /
+ADD drbd-wrapper.sh template.res /
 ADD start.sh /
 ADD init.sh /
 RUN yum install -y patch perl epel-release nc net-tools
