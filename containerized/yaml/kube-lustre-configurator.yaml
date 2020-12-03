@@ -15,7 +15,7 @@ spec:
         - name: CONFIGURE_SERVERS
           value: "1"
         - name: CONFIGURE_CLIENTS
-          value: "0"
+          value: "1"
         - name: DEBUG
           value: "1"
         volumeMounts:

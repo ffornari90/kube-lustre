@@ -24,7 +24,12 @@ else
 fi
 
 # Check for module
-$MODPROBE lustre
+$MODPROBE -v ksocklnd
+$MODPROBE -v lnet
+lnetctl lnet configure
+lnetctl net add --net tcp --if eth0
+lnetctl net show
+$MODPROBE -v lustre
 
 # Create mount target
 MOUNT_TARGET="$MOUNTPOINT"
