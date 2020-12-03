@@ -58,6 +58,28 @@ spec:
           value: "${LUSTRE_MOUNTPOINT}"
         - name: FORCE_CREATE
           value: "${LUSTRE_FORCE_CREATE:-0}"
+        - name: DEVICE
+          value: "${DRBD_DEVICE}"
+        - name: PROTOCOL
+          value: "${DRBD_PROTOCOL}"
+        - name: SYNCER_RATE
+          value: "${DRBD_SYNCER_RATE}"
+        - name: NODE1_NAME
+          value: "${NODE1_NAME}"
+        - name: NODE1_IP
+          value: "${NODE1_IP}"
+        - name: NODE1_DISK
+          value: "${DRBD_NODE1_DISK}"
+        - name: NODE1_PORT
+          value: "${DRBD_PORT}"
+        - name: NODE2_NAME
+          value: "${NODE2_NAME}"
+        - name: NODE2_IP
+          value: "${NODE2_IP}"
+        - name: NODE2_DISK
+          value: "${DRBD_NODE2_DISK}"
+        - name: NODE2_PORT
+          value: "${DRBD_PORT}"
         volumeMounts:
           - name: devdir
             mountPath: /dev
