@@ -27,7 +27,12 @@ fi
 $MODPROBE -v ksocklnd
 $MODPROBE -v lnet
 lnetctl lnet configure
-lnetctl net show
+if lnetctl net show | grep -q 'tcp'; then
+  lnetctl net show
+else
+  lnetctl net add --net tcp --if eth0 
+fi
+$MODPROBE -v mgc
 $MODPROBE -v osc
 $MODPROBE -v lustre
 
