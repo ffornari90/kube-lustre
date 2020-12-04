@@ -28,6 +28,7 @@ $MODPROBE -v ksocklnd
 $MODPROBE -v lnet
 lnetctl lnet configure
 lnetctl net show
+$MODPROBE -v osc
 $MODPROBE -v lustre
 
 # Create mount target
