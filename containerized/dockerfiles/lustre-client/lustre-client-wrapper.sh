@@ -27,7 +27,6 @@ fi
 $MODPROBE -v ksocklnd
 $MODPROBE -v lnet
 lnetctl lnet configure
-lnetctl net add --net tcp --if eth0
 lnetctl net show
 $MODPROBE -v lustre
 
