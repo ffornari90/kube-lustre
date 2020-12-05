@@ -30,7 +30,8 @@ lnetctl lnet configure
 if lnetctl net show | grep -q 'tcp'; then
   lnetctl net show
 else
-  lnetctl net add --net tcp --if eth0 
+  lnetctl net add --net tcp --if eth0
+  lnetctl net show
 fi
 $MODPROBE -v mgc
 $MODPROBE -v osc

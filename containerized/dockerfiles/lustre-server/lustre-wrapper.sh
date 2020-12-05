@@ -103,8 +103,12 @@ fi
 $MODPROBE -v ksocklnd
 $MODPROBE -v lnet
 lnetctl lnet configure
-lnetctl net add --net tcp --if eth0
-lnetctl net show
+if lnetctl net show | grep -q 'tcp'; then
+  lnetctl net show
+else
+  lnetctl net add --net tcp --if eth0
+  lnetctl net show
+fi
 $MODPROBE -v osd_zfs
 
 if [ "$TYPE" == "ost" ]; then
