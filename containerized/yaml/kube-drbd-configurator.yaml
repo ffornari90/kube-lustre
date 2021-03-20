@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-drbd-configurator
+  namespace: lustre
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      hostNetwork: true
+      containers:
+      - name: kube-drbd-configurator
+        image: ffornari/kube-lustre:kube-drbd-configurator-containerized
+        env:
+        - name: CONFIGURE_SERVERS
+          value: "1"
+        - name: DEBUG
+          value: "1"
+        volumeMounts:
+        - name: config
+          mountPath: /etc/kube-lustre
+      volumes:
+      - name: config
+        configMap:
+          name: kube-lustre-config
+      restartPolicy: Never

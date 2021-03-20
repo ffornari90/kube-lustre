@@ -1,0 +1,44 @@
+kind: ConfigMap
+metadata:
+  name: kube-lustre-config
+  namespace: lustre
+apiVersion: v1
+data:
+  configuration.json: |
+    {
+      "configuration1": {
+        "lustre": {
+          "install": true,
+          "mgsnode": "cs-005.cr.cnaf.infn.it:cs-006.cr.cnaf.infn.it",
+          "fsname": "lustrefs",
+          "device": "/dev/drbd0",
+          "debug": true,
+          "force_create": false,
+          "mountpoint": "/stor/lustrefs"
+        },
+        "drbd": {
+          "install": true,
+          "device": "/dev/drbd0",
+          "port": "7788",
+          "debug": true,
+          "force_create": false,
+          "disks": ["/dev/sdz", "/dev/sdz"]
+        }
+      }
+    }
+  daemons.json: |
+    {
+      "configuration1": {
+         "mdt0-mgs": ["cs-005.cr.cnaf.infn.it", "cs-006.cr.cnaf.infn.it"],
+         "ost0": ["cs-007.cr.cnaf.infn.it", "cs-008.cr.cnaf.infn.it"]
+      }
+    }
+  clients.json: |
+    {
+      "configuration1": [
+         "cs-005.cr.cnaf.infn.it",
+         "cs-006.cr.cnaf.infn.it",
+         "cs-007.cr.cnaf.infn.it",
+         "cs-008.cr.cnaf.infn.it"
+      ]
+    }

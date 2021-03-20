@@ -1,0 +1,6 @@
+FROM centos:7
+RUN yum install -y epel-release && yum install -y jq \
+ && curl -Lo /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+ && chmod +x /usr/local/bin/kubectl
+ADD kube-drbd-configurator.sh drbd.yaml /
+CMD ["/kube-drbd-configurator.sh"]

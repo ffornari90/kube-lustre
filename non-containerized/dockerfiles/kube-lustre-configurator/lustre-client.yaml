@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ${LUSTRE_FSNAME}-client
+  labels:
+      app: ${LUSTRE_FSNAME}-client
+      ${LUSTRE_FSNAME}/client: ""
+spec:
+  selector:
+    matchLabels:
+      name: ${LUSTRE_FSNAME}-client
+  template:
+    metadata:
+      labels:
+        name: ${LUSTRE_FSNAME}-client
+        ${LUSTRE_FSNAME}/client: ""
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        ${LUSTRE_FSNAME}/client: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      initContainers:
+      - name: lustre-install
+        image: ffornari/kube-lustre:lustre-2.12.4-install
+        env:
+        - name: CHROOT
+          value: "/host-root"
+        - name: DEBUG
+          value: "${LUSTRE_DEBUG:-0}"
+        volumeMounts:
+        - name: host-root
+          mountPath: "/host-root"
+      containers:
+      - name: ${LUSTRE_FSNAME}-client
+        image: ffornari/kube-lustre:lustre-client
+        securityContext:
+          privileged: true
+        env:
+        - name: DEBUG
+          value: "${LUSTRE_DEBUG:-0}"
+        - name: CHROOT
+          value: "/host-root"
+        - name: FSNAME
+          value: "${LUSTRE_FSNAME}"
+        - name: MGSNODE
+          value: "${LUSTRE_MGSNODE}"
+        - name: MOUNTPOINT
+          value: "${LUSTRE_MOUNTPOINT}"
+        volumeMounts:
+        - name: host-root
+          mountPath: /host-root
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /

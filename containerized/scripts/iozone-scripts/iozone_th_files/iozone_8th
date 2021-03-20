@@ -1,0 +1,8 @@
+cs-001 /stor/lustrefs/iozone/test1 /usr/bin/iozone
+cs-001 /stor/lustrefs/iozone/test2 /usr/bin/iozone
+cs-002 /stor/lustrefs/iozone/test3 /usr/bin/iozone
+cs-002 /stor/lustrefs/iozone/test4 /usr/bin/iozone
+cs-003 /stor/lustrefs/iozone/test5 /usr/bin/iozone
+cs-003 /stor/lustrefs/iozone/test6 /usr/bin/iozone
+cs-004 /stor/lustrefs/iozone/test7 /usr/bin/iozone
+cs-004 /stor/lustrefs/iozone/test8 /usr/bin/iozone

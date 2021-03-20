@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ${LUSTRE_FSNAME}-client
+  labels:
+      app: ${LUSTRE_FSNAME}-client
+      ${LUSTRE_FSNAME}/client: ""
+spec:
+  selector:
+    matchLabels:
+      name: ${LUSTRE_FSNAME}-client
+  template:
+    metadata:
+      labels:
+        name: ${LUSTRE_FSNAME}-client
+        ${LUSTRE_FSNAME}/client: ""
+    spec:
+      hostNetwork: true
+      nodeSelector:
+        ${LUSTRE_FSNAME}/client: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: ${LUSTRE_FSNAME}-client
+        image: ffornari/kube-lustre:lustre-client-containerized
+        securityContext:
+          privileged: true
+        env:
+        - name: DEBUG
+          value: "${LUSTRE_DEBUG:-0}"
+        - name: FSNAME
+          value: "${LUSTRE_FSNAME}"
+        - name: MGSNODE
+          value: "${LUSTRE_MGSNODE}"
+        - name: MOUNTPOINT
+          value: "${LUSTRE_MOUNTPOINT}"
+        volumeMounts:
+          - name: devdir
+            mountPath: /dev
+          - name: cgroupdir
+            mountPath: /sys/fs/cgroup
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: devdir
+          hostPath:
+            path: /dev
+            type: Directory
+        - name: cgroupdir
+          hostPath:
+            path: /sys/fs/cgroup
+            type: Directory
